@@ -1,4 +1,13 @@
 <!-- markdownlint-disable MD033 MD041 -->
+
+警告：
+不推荐使用！！！不推荐使用！！！不推荐使用！！！
+听说现在很多人被封
+
+
+闲着没事随便整了下
+
+mumu模拟器，4h6g，720*1280 dpi320
 <p align="center">
   <img alt="LOGO" src="https://cdn.jsdelivr.net/gh/MaaAssistantArknights/design@main/logo/maa-logo_512x512.png" width="256" height="256" />
 </p>

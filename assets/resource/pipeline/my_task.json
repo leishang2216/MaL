@@ -1,15 +1,19 @@
 {
     "Sunflower_LoopEntry": {
-        "next": "Sunflower_Stage1_PageCheck"
+        "next": [
+            "Sunflower_Stage1_PageCheck",
+            "Sunflower_Stage1_Fallback"
+        ]
     },
     "Sunflower_Stage1_PageCheck": {
         "recognition": "TemplateMatch",
         "template": "sunflower/index-1.png",
         "roi": [376, 535, 440, 80],
         "threshold": 0.8,
-        "timeout": 3000,
-        "next": "Sunflower_Stage2_BowPageCheck",
-        "on_error": "Sunflower_Stage1_ClickDynamic_1"
+        "next": "Sunflower_Stage2_BowPageCheck"
+    },
+    "Sunflower_Stage1_Fallback": {
+        "next": "Sunflower_Stage1_ClickDynamic_1"
     },
     "Sunflower_Stage1_ClickDynamic_1": {
         "action": "Click",
@@ -113,14 +117,8 @@
         "next": "Sunflower_WaitBySetting"
     },
     "Sunflower_WaitBySetting": {
-        "action": "Custom",
-        "custom_action": "sunflower_wait",
-        "custom_action_param": {
-            "mode": "fixed",
-            "fixed_seconds": 10,
-            "min_seconds": 8,
-            "max_seconds": 15
-        },
+        "action": "DoNothing",
+        "post_delay": 10000,
         "next": "Sunflower_LoopEntry"
     }
 }

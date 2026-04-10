@@ -51,107 +51,34 @@
             ]
         }
     ],
-    "agent": {
-        "child_exec": "python",
-        "child_args": [
-            "./agent/main.py"
-        ]
-    },
     "task": [
         {
             "name": "自动刷向阳花",
             "entry": "Sunflower_LoopEntry",
             "option": [
-                "向阳花等待模式",
+                "向阳花固定等待",
                 "向阳花是否为鞠躬号"
             ]
         }
     ],
     "option": {
-        "向阳花等待模式": {
-            "type": "select",
-            "label": "等待模式",
-            "description": "设置进入阶段三后的等待方式。固定等待使用单个秒数，随机等待会在区间内取随机整数秒。",
-            "default_case": "固定等待",
-            "cases": [
-                {
-                    "name": "固定等待",
-                    "option": [
-                        "向阳花固定等待"
-                    ],
-                    "pipeline_override": {
-                        "Sunflower_WaitBySetting": {
-                            "custom_action_param": {
-                                "mode": "fixed"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "随机等待",
-                    "option": [
-                        "向阳花随机等待"
-                    ],
-                    "pipeline_override": {
-                        "Sunflower_WaitBySetting": {
-                            "custom_action_param": {
-                                "mode": "random"
-                            }
-                        }
-                    }
-                }
-            ]
-        },
         "向阳花固定等待": {
             "type": "input",
-            "label": "固定等待秒数",
-            "description": "阶段三结束后，固定等待指定秒数再回到第一阶段。",
+            "label": "固定等待毫秒数",
+            "description": "阶段三结束后，固定等待指定毫秒数再回到第一阶段。",
             "inputs": [
                 {
-                    "name": "固定等待秒数",
-                    "label": "固定等待秒数",
-                    "default": "10",
+                    "name": "固定等待毫秒数",
+                    "label": "固定等待毫秒数",
+                    "default": "10000",
                     "pipeline_type": "int",
                     "verify": "^\\d+$",
-                    "pattern_msg": "请输入不小于 0 的整数秒数"
+                    "pattern_msg": "请输入不小于 0 的整数毫秒数"
                 }
             ],
             "pipeline_override": {
                 "Sunflower_WaitBySetting": {
-                    "custom_action_param": {
-                        "fixed_seconds": "{固定等待秒数}"
-                    }
-                }
-            }
-        },
-        "向阳花随机等待": {
-            "type": "input",
-            "label": "随机等待区间",
-            "description": "阶段三结束后，在最小与最大秒数之间随机等待。",
-            "inputs": [
-                {
-                    "name": "最小等待秒数",
-                    "label": "最小等待秒数",
-                    "default": "8",
-                    "pipeline_type": "int",
-                    "verify": "^\\d+$",
-                    "pattern_msg": "请输入不小于 0 的整数秒数"
-                },
-                {
-                    "name": "最大等待秒数",
-                    "label": "最大等待秒数",
-                    "default": "15",
-                    "pipeline_type": "int",
-                    "verify": "^\\d+$",
-                    "pattern_msg": "请输入不小于 0 的整数秒数"
-                }
-            ],
-            "pipeline_override": {
-                "Sunflower_WaitBySetting": {
-                    "custom_action_param": {
-                        "min_seconds": "{最小等待秒数}",
-                        "max_seconds": "{最大等待秒数}"
-                    }
+                    "post_delay": "{固定等待毫秒数}"
                 }
             }
         },
@@ -172,6 +99,12 @@
                 {
                     "name": "No",
                     "pipeline_override": {
+                        "Sunflower_Stage1_PageCheck": {
+                            "next": "Sunflower_WaitBySetting"
+                        },
+                        "Sunflower_Stage1_FinalLongPress": {
+                            "next": "Sunflower_WaitBySetting"
+                        },
                         "Sunflower_Stage2_BowPageCheck": {
                             "enabled": false
                         }

@@ -1,7 +1,6 @@
-from pathlib import Path
-
 import shutil
 import sys
+from pathlib import Path
 
 try:
     import jsonc
@@ -131,20 +130,9 @@ def install_chores():
         working_dir / "LICENSE",
         install_path,
     )
-
-
-def install_agent():
-    shutil.copytree(
-        working_dir / "agent",
-        install_path / "agent",
-        dirs_exist_ok=True,
-    )
-
-
 if __name__ == "__main__":
     install_deps()
     install_resource()
     install_chores()
-    install_agent()
 
     print(f"Install to {install_path} successfully.")

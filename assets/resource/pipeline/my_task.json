@@ -1,12 +1,126 @@
 {
-    "MyTask1": {},
-    "MyTask2": {},
-    "MyTask3": {},
-    "MyTask4": {
-        "recognition": "Custom",
-        "custom_recognition": "my_reco_222",
-        "action": "Custom",
-        "custom_action": "my_action_111"
+    "Sunflower_LoopEntry": {
+        "next": "Sunflower_Stage1_PageCheck"
     },
-    "OcrTask": {}
+    "Sunflower_Stage1_PageCheck": {
+        "recognition": "TemplateMatch",
+        "template": "sunflower/index-1.png",
+        "roi": [376, 535, 440, 80],
+        "threshold": 0.8,
+        "timeout": 3000,
+        "next": "Sunflower_Stage2_BowPageCheck",
+        "on_error": "Sunflower_Stage1_ClickDynamic_1"
+    },
+    "Sunflower_Stage1_ClickDynamic_1": {
+        "action": "Click",
+        "target": [118, 104, 1, 1],
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_LongPressStable_1"
+    },
+    "Sunflower_Stage1_LongPressStable_1": {
+        "action": "LongPress",
+        "target": [1007, 575, 1, 1],
+        "duration": 1000,
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_ClickDynamic_2"
+    },
+    "Sunflower_Stage1_ClickDynamic_2": {
+        "action": "Click",
+        "target": [119, 163, 1, 1],
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_LongPressStable_2"
+    },
+    "Sunflower_Stage1_LongPressStable_2": {
+        "action": "LongPress",
+        "target": [1007, 575, 1, 1],
+        "duration": 1000,
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_ClickDynamic_3"
+    },
+    "Sunflower_Stage1_ClickDynamic_3": {
+        "action": "Click",
+        "target": [121, 230, 1, 1],
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_LongPressStable_3"
+    },
+    "Sunflower_Stage1_LongPressStable_3": {
+        "action": "LongPress",
+        "target": [1007, 575, 1, 1],
+        "duration": 1000,
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_ClickDynamic_4"
+    },
+    "Sunflower_Stage1_ClickDynamic_4": {
+        "action": "Click",
+        "target": [123, 293, 1, 1],
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_LongPressStable_4"
+    },
+    "Sunflower_Stage1_LongPressStable_4": {
+        "action": "LongPress",
+        "target": [1007, 575, 1, 1],
+        "duration": 1000,
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_ClickDynamic_5"
+    },
+    "Sunflower_Stage1_ClickDynamic_5": {
+        "action": "Click",
+        "target": [121, 353, 1, 1],
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_LongPressStable_5"
+    },
+    "Sunflower_Stage1_LongPressStable_5": {
+        "action": "LongPress",
+        "target": [1007, 575, 1, 1],
+        "duration": 1000,
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_ClickDynamic_6"
+    },
+    "Sunflower_Stage1_ClickDynamic_6": {
+        "action": "Click",
+        "target": [125, 404, 1, 1],
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_LongPressStable_6"
+    },
+    "Sunflower_Stage1_LongPressStable_6": {
+        "action": "LongPress",
+        "target": [1007, 575, 1, 1],
+        "duration": 1000,
+        "post_delay": 200,
+        "next": "Sunflower_Stage1_FinalLongPress"
+    },
+    "Sunflower_Stage1_FinalLongPress": {
+        "action": "LongPress",
+        "target": [526, 483, 1, 1],
+        "duration": 2000,
+        "post_delay": 300,
+        "next": "Sunflower_Stage2_BowPageCheck"
+    },
+    "Sunflower_Stage2_BowPageCheck": {
+        "enabled": false,
+        "recognition": "TemplateMatch",
+        "template": "sunflower/index-1.png",
+        "roi": [376, 535, 440, 80],
+        "threshold": 0.8,
+        "timeout": 2500,
+        "next": "Sunflower_Stage3_ClickFixed",
+        "on_error": "Sunflower_WaitBySetting"
+    },
+    "Sunflower_Stage3_ClickFixed": {
+        "action": "Click",
+        "target": [501, 566, 1, 1],
+        "post_delay": 200,
+        "next": "Sunflower_WaitBySetting"
+    },
+    "Sunflower_WaitBySetting": {
+        "action": "Custom",
+        "custom_action": "sunflower_wait",
+        "custom_action_param": {
+            "mode": "fixed",
+            "fixed_seconds": 10,
+            "min_seconds": 8,
+            "max_seconds": 15
+        },
+        "next": "Sunflower_LoopEntry"
+    }
 }

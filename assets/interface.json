@@ -4,14 +4,14 @@
     // 文档：https://maafw.xyz/docs/3.3-ProjectInterfaceV2
     // 示例：https://github.com/MaaXYZ/MaaFramework/blob/main/sample/interface.json
     "interface_version": 2,
-    "name": "MaaXXX",
+    "name": "MaL",
     "description": "这是一个使用 MaaFramework 创建的新项目。",
     "contact": "QQ群: 123456789",
     "license": "MIT",
     "welcome": "首次使用！欢迎使用 MAA!",
     // 填写项目地址和版本号可实现自动更新功能
-    "github": "https://github.com/MaaXYZ/MaaPracticeBoilerplate",
-    "version": "1.0.0",
+    "github": "https://github.com/leishang2216/MaL",
+    "version": "0.0.1",
     // Mirror酱为第三方分发服务，新项目默认关闭
     // 若有需要请联系 Mirror酱 开通，直接自行开启是无法使用的
     // "mirrorchyan_rid": "MaaXXX",
@@ -51,55 +51,129 @@
             ]
         }
     ],
-    // 可选的 agent 示例
-    // "agent": {
-    //     "child_exec": "python",
-    //     "child_args": [
-    //         "./agent/main.py"
-    //     ]
-    // },
+    "agent": {
+        "child_exec": "python",
+        "child_args": [
+            "../agent/main.py"
+        ]
+    },
     "task": [
         {
-            "name": "普通任务",
-            "entry": "MyTask1"
-        },
-        {
-            "name": "选项任务",
-            "entry": "MyTask2",
+            "name": "自动刷向阳花",
+            "entry": "Sunflower_LoopEntry",
             "option": [
-                "任务选项1"
+                "向阳花等待模式",
+                "向阳花是否为鞠躬号"
             ]
-        },
-        {
-            "name": "参数任务",
-            "entry": "MyTask3",
-            "option": [
-                "任务选项1"
-            ],
-            "pipeline_override": {}
-        },
-        {
-            "name": "带Custom的任务",
-            "entry": "MyTask4"
         }
     ],
     "option": {
-        "任务选项1": {
+        "向阳花等待模式": {
             "type": "select",
+            "label": "等待模式",
+            "description": "设置进入阶段三后的等待方式。固定等待使用单个秒数，随机等待会在区间内取随机整数秒。",
+            "default_case": "固定等待",
             "cases": [
                 {
-                    "name": "文本1",
+                    "name": "固定等待",
+                    "option": [
+                        "向阳花固定等待"
+                    ],
                     "pipeline_override": {
-                        "OcrTask": {
-                            "text": "文本1"
+                        "Sunflower_WaitBySetting": {
+                            "custom_action_param": {
+                                "mode": "fixed"
+                            }
                         }
                     }
                 },
                 {
-                    "name": "文本2",
+                    "name": "随机等待",
+                    "option": [
+                        "向阳花随机等待"
+                    ],
                     "pipeline_override": {
-                        "OcrTask": {
-                            "text": "文本2"
+                        "Sunflower_WaitBySetting": {
+                            "custom_action_param": {
+                                "mode": "random"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "向阳花固定等待": {
+            "type": "input",
+            "label": "固定等待秒数",
+            "description": "阶段三结束后，固定等待指定秒数再回到第一阶段。",
+            "inputs": [
+                {
+                    "name": "固定等待秒数",
+                    "label": "固定等待秒数",
+                    "default": "10",
+                    "pipeline_type": "int",
+                    "verify": "^\\d+$",
+                    "pattern_msg": "请输入不小于 0 的整数秒数"
+                }
+            ],
+            "pipeline_override": {
+                "Sunflower_WaitBySetting": {
+                    "custom_action_param": {
+                        "fixed_seconds": "{固定等待秒数}"
+                    }
+                }
+            }
+        },
+        "向阳花随机等待": {
+            "type": "input",
+            "label": "随机等待区间",
+            "description": "阶段三结束后，在最小与最大秒数之间随机等待。",
+            "inputs": [
+                {
+                    "name": "最小等待秒数",
+                    "label": "最小等待秒数",
+                    "default": "8",
+                    "pipeline_type": "int",
+                    "verify": "^\\d+$",
+                    "pattern_msg": "请输入不小于 0 的整数秒数"
+                },
+                {
+                    "name": "最大等待秒数",
+                    "label": "最大等待秒数",
+                    "default": "15",
+                    "pipeline_type": "int",
+                    "verify": "^\\d+$",
+                    "pattern_msg": "请输入不小于 0 的整数秒数"
+                }
+            ],
+            "pipeline_override": {
+                "Sunflower_WaitBySetting": {
+                    "custom_action_param": {
+                        "min_seconds": "{最小等待秒数}",
+                        "max_seconds": "{最大等待秒数}"
+                    }
+                }
+            }
+        },
+        "向阳花是否为鞠躬号": {
+            "type": "switch",
+            "label": "是否为鞠躬号",
+            "description": "为 Yes 时启用第二阶段页面判断和第三阶段点击；为 No 时完成第一阶段后直接等待并重新循环。",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "pipeline_override": {
+                        "Sunflower_Stage2_BowPageCheck": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "pipeline_override": {
+                        "Sunflower_Stage2_BowPageCheck": {
+                            "enabled": false
                         }
                     }
                 }

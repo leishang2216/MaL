@@ -9,6 +9,10 @@
 闲着没事随便整了下
 
 mumu模拟器，4h6g，720*1280 dpi320
+
+洛克王国：世界
+简单介绍功能：需要小号，大号没做
+连接小号模拟器即可，然后先注意长按能不能呼出动作页面，不能自己调整下位置就行
 <p align="center">
   <img alt="LOGO" src="https://cdn.jsdelivr.net/gh/MaaAssistantArknights/design@main/logo/maa-logo_512x512.png" width="256" height="256" />
 </p>

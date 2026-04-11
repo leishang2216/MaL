@@ -42,71 +42,123 @@
             "path": [
                 "./resource"
             ]
-        },
-        {
-            "name": "B 服",
-            "path": [
-                "./resource"
-                // "./resource_bilibili"
-            ]
         }
     ],
+    "agent": {
+        "child_exec": "python",
+        // child_args 相对路径以 interface.json 所在目录为基准
+        "child_args": [
+            "../agent/main.py"
+        ]
+    },
     "task": [
         {
             "name": "自动刷向阳花",
             "entry": "Sunflower_LoopEntry",
             "option": [
-                "向阳花固定等待",
+                "向阳花等待模式",
                 "向阳花是否为鞠躬号"
             ]
         }
     ],
     "option": {
+        "向阳花等待模式": {
+            "type": "select",
+            "label": "等待模式",
+            "description": "可选择固定秒数等待，或按输入区间随机等待后再开始下一轮阶段1。",
+            "default_case": "固定秒数",
+            "cases": [
+                {
+                    "name": "固定秒数",
+                    "option": [
+                        "向阳花固定等待"
+                    ]
+                },
+                {
+                    "name": "随机区间",
+                    "option": [
+                        "向阳花随机等待"
+                    ]
+                }
+            ]
+        },
         "向阳花固定等待": {
             "type": "input",
-            "label": "固定等待毫秒数",
-            "description": "阶段三结束后，固定等待指定毫秒数再回到第一阶段。",
+            "label": "固定等待秒数",
+            "description": "等待节点会在进入下一轮阶段1前固定等待指定秒数。",
             "inputs": [
                 {
-                    "name": "固定等待毫秒数",
-                    "label": "固定等待毫秒数",
-                    "default": "10000",
+                    "name": "固定等待秒数",
+                    "label": "固定等待秒数",
+                    "default": "10",
                     "pipeline_type": "int",
                     "verify": "^\\d+$",
-                    "pattern_msg": "请输入不小于 0 的整数毫秒数"
+                    "pattern_msg": "请输入不小于 0 的整数秒数"
                 }
             ],
             "pipeline_override": {
                 "Sunflower_WaitBySetting": {
-                    "post_delay": "{固定等待毫秒数}"
+                    "custom_action_param": {
+                        "mode": "fixed",
+                        "fixed_seconds": "{固定等待秒数}",
+                        "random_min_seconds": 0,
+                        "random_max_seconds": 0
+                    }
+                }
+            }
+        },
+        "向阳花随机等待": {
+            "type": "input",
+            "label": "随机等待区间秒数",
+            "description": "等待节点会在起始和终止秒数之间随机取一个整数秒数，再开始下一轮阶段1。",
+            "inputs": [
+                {
+                    "name": "随机起始秒数",
+                    "label": "随机起始秒数",
+                    "default": "10",
+                    "pipeline_type": "int",
+                    "verify": "^\\d+$",
+                    "pattern_msg": "请输入不小于 0 的整数秒数"
+                },
+                {
+                    "name": "随机终止秒数",
+                    "label": "随机终止秒数",
+                    "default": "20",
+                    "pipeline_type": "int",
+                    "verify": "^\\d+$",
+                    "pattern_msg": "请输入不小于 0 的整数秒数"
+                }
+            ],
+            "pipeline_override": {
+                "Sunflower_WaitBySetting": {
+                    "custom_action_param": {
+                        "mode": "random",
+                        "fixed_seconds": 0,
+                        "random_min_seconds": "{随机起始秒数}",
+                        "random_max_seconds": "{随机终止秒数}"
+                    }
                 }
             }
         },
         "向阳花是否为鞠躬号": {
             "type": "switch",
             "label": "是否为鞠躬号",
-            "description": "为 Yes 时启用第二阶段页面判断和第三阶段点击；为 No 时完成第一阶段后直接等待并重新循环。",
+            "description": "为 Yes 时进入阶段2页面判断；为 No 时先等待，再重新开始阶段1。",
             "default_case": "No",
             "cases": [
                 {
                     "name": "Yes",
                     "pipeline_override": {
-                        "Sunflower_Stage2_BowPageCheck": {
-                            "enabled": true
+                        "Sunflower_BowAccountGate": {
+                            "next": "Sunflower_Stage2_Entry"
                         }
                     }
                 },
                 {
                     "name": "No",
                     "pipeline_override": {
-                        "Sunflower_Stage1_PageCheck": {
+                        "Sunflower_BowAccountGate": {
                             "next": "Sunflower_WaitBySetting"
-                        },
-                        "Sunflower_Stage1_FinalLongPress": {
-                            "next": "Sunflower_WaitBySetting"
-                        },
-                        "Sunflower_Stage2_BowPageCheck": {
-                            "enabled": false
                         }
                     }
                 }

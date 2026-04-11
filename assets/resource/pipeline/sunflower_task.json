@@ -2,7 +2,7 @@
     "Sunflower_LoopEntry": {
         "next": [
             "Sunflower_Stage1_PageCheck",
-            "Sunflower_Stage1_Fallback"
+            "Sunflower_Stage1_ActionEntry"
         ]
     },
     "Sunflower_Stage1_PageCheck": {
@@ -10,9 +10,9 @@
         "template": "sunflower/index-1.png",
         "roi": [376, 535, 440, 80],
         "threshold": 0.8,
-        "next": "Sunflower_Stage2_BowPageCheck"
+        "next": "Sunflower_BowAccountGate"
     },
-    "Sunflower_Stage1_Fallback": {
+    "Sunflower_Stage1_ActionEntry": {
         "next": "Sunflower_Stage1_ClickDynamic_1"
     },
     "Sunflower_Stage1_ClickDynamic_1": {
@@ -98,17 +98,24 @@
         "target": [526, 483, 1, 1],
         "duration": 2000,
         "post_delay": 300,
-        "next": "Sunflower_Stage2_BowPageCheck"
+        "next": "Sunflower_BowAccountGate"
     },
-    "Sunflower_Stage2_BowPageCheck": {
-        "enabled": false,
+    "Sunflower_BowAccountGate": {
+        "next": "Sunflower_WaitBySetting"
+    },
+    "Sunflower_Stage2_Entry": {
+        "next": [
+            "Sunflower_Stage2_PageCheck"
+        ],
+        "timeout": 2500,
+        "on_error": "Sunflower_LoopEntry"
+    },
+    "Sunflower_Stage2_PageCheck": {
         "recognition": "TemplateMatch",
         "template": "sunflower/index-1.png",
         "roi": [376, 535, 440, 80],
         "threshold": 0.8,
-        "timeout": 2500,
-        "next": "Sunflower_Stage3_ClickFixed",
-        "on_error": "Sunflower_WaitBySetting"
+        "next": "Sunflower_Stage3_ClickFixed"
     },
     "Sunflower_Stage3_ClickFixed": {
         "action": "Click",
@@ -117,8 +124,14 @@
         "next": "Sunflower_WaitBySetting"
     },
     "Sunflower_WaitBySetting": {
-        "action": "DoNothing",
-        "post_delay": 10000,
+        "action": "Custom",
+        "custom_action": "sunflower_wait",
+        "custom_action_param": {
+            "mode": "fixed",
+            "fixed_seconds": 10,
+            "random_min_seconds": 0,
+            "random_max_seconds": 0
+        },
         "next": "Sunflower_LoopEntry"
     }
 }
